@@ -1,16 +1,15 @@
 package com.raumobil.balotelli.model
 
-
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class Message {
-
+class Vote {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     Long id
-    String content
+
+    String respondentName
+    String restaurant
 }

@@ -1,16 +1,14 @@
-package com.raumobil.balotelli;
+package com.raumobil.balotelli
 
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
-public class SpringRestController {
+class SpringRestController {
 
     @GetMapping("/connect")
-    public void connect(){
-        System.out.println("Spring Boot Application Connected.");
+    void connect(){
+        System.out.println("Spring Boot Application Connected.")
     }
 
 }
