@@ -1,38 +1,27 @@
 package com.raumobil.balotelli.controller
 
-import com.raumobil.balotelli.model.Vote
-import com.raumobil.balotelli.repository.VoteRepository
-import com.raumobil.balotelli.service.WhitelistedUserService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
+import com.raumobil.balotelli.service.VoteService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
 
 @RestController
-@RequestMapping("/votes")
+@RequestMapping("/api/vote")
 class VoteController {
+    private final VoteService voteService
 
-    @Autowired
-    WhitelistedUserService whitelistedUserService
-
-    @Autowired
-    VoteRepository voteRepository
+    VoteController(VoteService voteService) {
+        this.voteService = voteService
+    }
 
     @PostMapping
-    Vote addVote(@RequestBody Vote vote) {
-        if (!whitelistedUserService.isWhitelisted(vote.respondentName)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not authorized to vote")
+    ResponseEntity<?> castVote(@RequestBody Map<String, String> request) {
+        String email = request.get("email")
+        String voteOption = request.get("voteOption")
+        try {
+            voteService.castVote(email, voteOption)
+            return ResponseEntity.ok("Vote cast successfully")
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage())
         }
-        return voteRepository.save(vote)
-    }
-
-    @GetMapping
-    List<Vote> getVotes() {
-        return voteRepository.findAll()
-    }
-
-    @DeleteMapping
-    void deleteVotes() {
-        voteRepository.deleteAll()
     }
 }

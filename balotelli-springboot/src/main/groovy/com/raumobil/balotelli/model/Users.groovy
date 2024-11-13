@@ -6,10 +6,12 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class Vote {
+class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     String email
-    String voteOption
+    String password
+    String displayName
 }
+

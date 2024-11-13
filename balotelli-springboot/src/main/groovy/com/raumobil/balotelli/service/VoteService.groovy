@@ -10,8 +10,16 @@ class VoteService {
     @Autowired
     VoteRepository voteRepository
 
-    void saveVote(Vote vote) {
-        voteRepository.save(vote)
+    void saveOrUpdateVote(Vote vote) {
+        Vote existingVote = voteRepository.findByUserName(vote.username).orElse(null)
+
+        if (existingVote) {
+            existingVote.restaurant = vote.restaurant
+        } else {
+            existingVote = vote
+        }
+
+        voteRepository.save(existingVote)
     }
 
     List<Vote> getAllVotes() {
@@ -20,5 +28,9 @@ class VoteService {
 
     void clearVotes() {
         voteRepository.deleteAll()
+    }
+
+    boolean isRespondentNameExists(String respondentName) {
+        return voteRepository.existsByDisplayName(respondentName)
     }
 }
